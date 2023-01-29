@@ -1,0 +1,7 @@
+name = "TwoQubitWeylChamber"
+uuid = "cad078a0-0012-46f4-b55e-a945d44e115b"
+authors = ["Michael Goerz <mail@michaelgoerz.net>"]
+version = "0.1.0-dev"
+
+[compat]
+julia = "1.6"
