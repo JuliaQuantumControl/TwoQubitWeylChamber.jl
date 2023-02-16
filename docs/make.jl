@@ -1,4 +1,5 @@
 using TwoQubitWeylChamber
+using Pkg
 using Documenter
 
 DocMeta.setdocmeta!(
@@ -8,19 +9,29 @@ DocMeta.setdocmeta!(
     recursive=true
 )
 
+PROJECT_TOML = Pkg.TOML.parsefile(joinpath(@__DIR__, "..", "Project.toml"))
+VERSION = PROJECT_TOML["version"]
+NAME = PROJECT_TOML["name"]
+AUTHORS = join(PROJECT_TOML["authors"], ", ") * " and contributors"
+GITHUB = "https://github.com/JuliaQuantumControl/TwoQubitWeylChamber.jl"
+
+println("Starting makedocs")
+
+
 makedocs(;
-    modules=[TwoQubitWeylChamber],
-    authors="Michael Goerz <mail@michaelgoerz.net>",
-    repo="https://github.com/JuliaQuantumControl/TwoQubitWeylChamber.jl/blob/{commit}{path}#{line}",
+    authors=AUTHORS,
     sitename="TwoQubitWeylChamber.jl",
     format=Documenter.HTML(;
-        prettyurls=get(ENV, "CI", "false") == "true",
+        prettyurls=true,
         canonical="https://JuliaQuantumControl.github.io/TwoQubitWeylChamber.jl",
         edit_link="master",
-        assets=String[]
+        assets=String[],
+        footer="[$NAME.jl]($GITHUB) v$VERSION docs powered by [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl)."
     ),
     pages=["Home" => "index.md",]
 )
+
+println("Finished makedocs")
 
 deploydocs(;
     repo="github.com/JuliaQuantumControl/TwoQubitWeylChamber.jl",
