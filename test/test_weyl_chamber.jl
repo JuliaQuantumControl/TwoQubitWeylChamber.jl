@@ -1,7 +1,7 @@
 using Test
 using LinearAlgebra
-using QuantumControlBase: Objective
-using QuantumControlBase.Functionals
+using QuantumControl: Objective
+using QuantumControl.Functionals
 using QuantumControlTestUtils.RandomObjects: random_matrix, random_state_vector
 
 using TwoQubitWeylChamber
