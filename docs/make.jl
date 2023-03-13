@@ -1,6 +1,7 @@
 using TwoQubitWeylChamber
 using Pkg
 using Documenter
+using QuantumCitations
 
 DocMeta.setdocmeta!(
     TwoQubitWeylChamber,
@@ -17,16 +18,19 @@ GITHUB = "https://github.com/JuliaQuantumControl/TwoQubitWeylChamber.jl"
 
 println("Starting makedocs")
 
+bib = CitationBibliography(joinpath(@__DIR__, "src", "refs.bib"); style=:numeric)
 
-makedocs(;
+makedocs(
+    bib;
     authors=AUTHORS,
     sitename="TwoQubitWeylChamber.jl",
     format=Documenter.HTML(;
         prettyurls=true,
         canonical="https://JuliaQuantumControl.github.io/TwoQubitWeylChamber.jl",
         edit_link="master",
-        assets=String[],
-        footer="[$NAME.jl]($GITHUB) v$VERSION docs powered by [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl)."
+        assets=String["assets/citations.css"],
+        footer="[$NAME.jl]($GITHUB) v$VERSION docs powered by [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl).",
+        mathengine=KaTeX()
     ),
     pages=["Home" => "index.md",]
 )

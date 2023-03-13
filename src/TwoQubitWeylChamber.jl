@@ -70,8 +70,12 @@ end
 c₁, c₂, c₃ = weyl_chamber_coordinates(U)
 ```
 
-calculates the Weyl chamber coordinates using the algorithm described in Childs
-et al., PRA 68, 052311 (2003).
+calculates the Weyl chamber coordinates using the algorithm described in
+[ChildsPRA2003](@citet).
+
+# Reference
+
+* [ChildsPRA2003](@cite) Childs *et al.*. Phys. Rev. A 68, 052311 (2003)
 """
 function weyl_chamber_coordinates(U)
 
@@ -117,7 +121,9 @@ calculates that maximum concurrence ``C ∈ [0, 1]`` that the two two-qubit gate
 respectively the gate described by the Weyl chamber coordinates `c₁`, `c₂`,
 `c₃` (see [`weyl_chamber_coordinates`](@ref)) can generate.
 
-See Kraus, Cirac, Phys. Rev. A 63, 062309 (2001)
+# Reference
+
+* [KrausPRA2001](@cite) Kraus and Cirac, Phys. Rev. A 63, 062309 (2001)
 """
 function gate_concurrence(c₁, c₂, c₃)
     if (c₁ + c₂ ≥ 0.5) && (c₁ - c₂ ≤ 0.5) && (c₂ + c₃ ≤ 0.5)
