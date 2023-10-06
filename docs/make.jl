@@ -1,7 +1,7 @@
 using TwoQubitWeylChamber
 using Pkg
 using Documenter
-using QuantumCitations
+using DocumenterCitations
 
 DocMeta.setdocmeta!(
     TwoQubitWeylChamber,
@@ -20,8 +20,8 @@ println("Starting makedocs")
 
 bib = CitationBibliography(joinpath(@__DIR__, "src", "refs.bib"); style=:numeric)
 
-makedocs(
-    bib;
+makedocs(;
+    plugins=[bib],
     authors=AUTHORS,
     sitename="TwoQubitWeylChamber.jl",
     format=Documenter.HTML(;
