@@ -2,6 +2,7 @@ using TwoQubitWeylChamber
 using Pkg
 using Documenter
 using DocumenterCitations
+using DocumenterInterLinks
 
 DocMeta.setdocmeta!(
     TwoQubitWeylChamber,
@@ -28,7 +29,15 @@ makedocs(;
         prettyurls=true,
         canonical="https://JuliaQuantumControl.github.io/TwoQubitWeylChamber.jl",
         edit_link="master",
-        assets=String["assets/citations.css"],
+        assets=[
+            "assets/citations.css",
+            asset(
+                "https://juliaquantumcontrol.github.io/QuantumControl.jl/dev/assets/topbar/topbar.css"
+            ),
+            asset(
+                "https://juliaquantumcontrol.github.io/QuantumControl.jl/dev/assets/topbar/topbar.js"
+            ),
+        ],
         footer="[$NAME.jl]($GITHUB) v$VERSION docs powered by [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl).",
         mathengine=KaTeX()
     ),
