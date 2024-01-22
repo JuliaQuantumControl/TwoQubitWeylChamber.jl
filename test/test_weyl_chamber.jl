@@ -1,8 +1,12 @@
 using Test
 using LinearAlgebra
-using QuantumControl: Objective
+using QuantumControl: QuantumControl, Trajectory
 using QuantumControl.Functionals
 using QuantumControlTestUtils.RandomObjects: random_matrix, random_state_vector
+using FiniteDifferences
+using Zygote
+
+QuantumControl.set_default_ad_framework(Zygote)
 
 using TwoQubitWeylChamber
 
@@ -238,27 +242,25 @@ end
     Ψ3 = random_state_vector(4)
     Ψ4 = random_state_vector(4)
 
-    objectives = [
-        Objective(
-            initial_state=ket(lbl; N=2),
-            generator=random_matrix(4; hermitian=true, complex=false)
-        ) for lbl in ("00", "01", "10", "11")
+    trajectories = [
+        Trajectory(ket(lbl; N=2), random_matrix(4; hermitian=true, complex=false)) for
+        lbl in ("00", "01", "10", "11")
     ]
 
     J_T = gate_functional(D_PE; unitarity_weight=0.0)
-    chi_pe! = make_chi(J_T, objectives)
+    chi_pe! = make_chi(J_T, trajectories)
     ϕ = [Ψ1, Ψ2, Ψ3, Ψ4]
     χ_zygote = [similar(ϕₖ) for ϕₖ in ϕ]
-    chi_pe!(χ_zygote, ϕ, objectives)
+    chi_pe!(χ_zygote, ϕ, trajectories)
 
-    gate_chi_pe! = make_gate_chi(D_PE, objectives; unitarity_weight=0.0)
+    gate_chi_pe! = make_gate_chi(D_PE, trajectories; unitarity_weight=0.0)
     χ_gate_zygote = [similar(ϕₖ) for ϕₖ in ϕ]
-    gate_chi_pe!(χ_gate_zygote, ϕ, objectives)
+    gate_chi_pe!(χ_gate_zygote, ϕ, trajectories)
 
     gate_chi_pe_fd! =
-        make_gate_chi(D_PE, objectives; use_finite_differences=true, unitarity_weight=0.0)
+        make_gate_chi(D_PE, trajectories; automatic=FiniteDifferences, unitarity_weight=0.0)
     χ_gate_fd = [similar(ϕₖ) for ϕₖ in ϕ]
-    gate_chi_pe_fd!(χ_gate_fd, ϕ, objectives)
+    gate_chi_pe_fd!(χ_gate_fd, ϕ, trajectories)
 
     vec_angle(v⃗, w⃗) = acos((v⃗ ⋅ w⃗) / (norm(v⃗) * norm(w⃗)))
 
@@ -296,7 +298,7 @@ end
     basis = [ket(lbl; N=2) for lbl in ("00", "01", "10", "11")]
     H = random_matrix(4; hermitian=true, complex=false)
 
-    objectives = [Objective(initial_state=Ψ, generator=H) for Ψ in basis]
+    trajectories = [Trajectory(Ψ, H) for Ψ in basis]
 
     c1, c2, c3 = rand(3) .* [1, 0.5, 0.5]
     while !in_weyl_chamber(c1, c2, c3; region)
@@ -309,13 +311,13 @@ end
     J_T_U = U -> 1 - gate_concurrence(U)
     J_T = gate_functional(J_T_U)
 
-    gate_chi_pe! = make_gate_chi(J_T_U, objectives)
+    gate_chi_pe! = make_gate_chi(J_T_U, trajectories)
     χ_gate_zygote = [similar(ϕₖ) for ϕₖ in ϕ]
-    gate_chi_pe!(χ_gate_zygote, ϕ, objectives)
+    gate_chi_pe!(χ_gate_zygote, ϕ, trajectories)
 
-    gate_chi_pe_fd! = make_gate_chi(J_T_U, objectives; use_finite_differences=true)
+    gate_chi_pe_fd! = make_gate_chi(J_T_U, trajectories; automatic=FiniteDifferences)
     χ_gate_fd = [similar(ϕₖ) for ϕₖ in ϕ]
-    gate_chi_pe_fd!(χ_gate_fd, ϕ, objectives)
+    gate_chi_pe_fd!(χ_gate_fd, ϕ, trajectories)
 
     # Does Zygote gate gradient and FD gate gradient match?
     @test norm(χ_gate_zygote[1] - χ_gate_fd[1]) < 1e-8

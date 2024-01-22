@@ -305,7 +305,7 @@ goes deeper into the perfect entanglers while *increasing* population loss.
 !!! tip
 
     The functional can be converted into the correct form for an optimization
-    that uses one objective for each logical basis state by using
+    that uses one trajectory for each logical basis state by using
     `QuantumControl.Functionals.gate_functional`.
 """
 function D_PE(U; unitarity_weight=0.0, absolute_square=false)
