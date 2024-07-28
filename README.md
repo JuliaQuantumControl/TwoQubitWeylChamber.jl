@@ -1,5 +1,6 @@
 # TwoQubitWeylChamber
 
+[![Version](https://juliahub.com/docs/General/TwoQubitWeylChamber/stable/version.svg)](https://juliahub.com/ui/Packages/General/TwoQubitWeylChamber)
 [![Stable](https://img.shields.io/badge/docs-stable-blue.svg)](https://JuliaQuantumControl.github.io/TwoQubitWeylChamber.jl/stable/)
 [![Dev](https://img.shields.io/badge/docs-dev-blue.svg)](https://JuliaQuantumControl.github.io/TwoQubitWeylChamber.jl/dev/)
 [![Build Status](https://github.com/JuliaQuantumControl/TwoQubitWeylChamber.jl/actions/workflows/CI.yml/badge.svg?branch=master)](https://github.com/JuliaQuantumControl/TwoQubitWeylChamber.jl/actions/workflows/CI.yml?query=branch%3Amaster)
