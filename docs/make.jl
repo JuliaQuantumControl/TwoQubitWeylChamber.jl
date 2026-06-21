@@ -8,7 +8,7 @@ DocMeta.setdocmeta!(
     TwoQubitWeylChamber,
     :DocTestSetup,
     :(using TwoQubitWeylChamber);
-    recursive=true
+    recursive = true
 )
 
 PROJECT_TOML = Pkg.TOML.parsefile(joinpath(@__DIR__, "..", "Project.toml"))
@@ -19,17 +19,17 @@ GITHUB = "https://github.com/JuliaQuantumControl/TwoQubitWeylChamber.jl"
 
 println("Starting makedocs")
 
-bib = CitationBibliography(joinpath(@__DIR__, "src", "refs.bib"); style=:numeric)
+bib = CitationBibliography(joinpath(@__DIR__, "src", "refs.bib"); style = :numeric)
 
 makedocs(;
-    plugins=[bib],
-    authors=AUTHORS,
-    sitename="TwoQubitWeylChamber.jl",
-    format=Documenter.HTML(;
-        prettyurls=true,
-        canonical="https://JuliaQuantumControl.github.io/TwoQubitWeylChamber.jl",
-        edit_link="master",
-        assets=[
+    plugins = [bib],
+    authors = AUTHORS,
+    sitename = "TwoQubitWeylChamber.jl",
+    format = Documenter.HTML(;
+        prettyurls = true,
+        canonical = "https://JuliaQuantumControl.github.io/TwoQubitWeylChamber.jl",
+        edit_link = "master",
+        assets = [
             "assets/citations.css",
             asset(
                 "https://juliaquantumcontrol.github.io/QuantumControl.jl/dev/assets/topbar/topbar.css"
@@ -38,15 +38,15 @@ makedocs(;
                 "https://juliaquantumcontrol.github.io/QuantumControl.jl/dev/assets/topbar/topbar.js"
             ),
         ],
-        footer="[$NAME.jl]($GITHUB) v$VERSION docs powered by [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl).",
-        mathengine=KaTeX()
+        footer = "[$NAME.jl]($GITHUB) v$VERSION docs powered by [Documenter.jl](https://github.com/JuliaDocs/Documenter.jl).",
+        mathengine = KaTeX()
     ),
-    pages=["Home" => "index.md",]
+    pages = ["Home" => "index.md",]
 )
 
 println("Finished makedocs")
 
 deploydocs(;
-    repo="github.com/JuliaQuantumControl/TwoQubitWeylChamber.jl",
-    devbranch="master"
+    repo = "github.com/JuliaQuantumControl/TwoQubitWeylChamber.jl",
+    devbranch = "master"
 )

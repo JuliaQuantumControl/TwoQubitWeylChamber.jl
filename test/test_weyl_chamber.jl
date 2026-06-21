@@ -26,16 +26,16 @@ function ket(i::Int64; N)
 end
 
 function ket(indices::Int64...; N)
-    Ψ = ket(indices[1]; N=N)
+    Ψ = ket(indices[1]; N = N)
     for i in indices[2:end]
-        Ψ = Ψ ⊗ ket(i; N=N)
+        Ψ = Ψ ⊗ ket(i; N = N)
     end
     return Ψ
 end
 
 function ket(label::AbstractString; N)
     indices = [parse(Int64, digit) for digit in label]
-    return ket(indices...; N=N)
+    return ket(indices...; N = N)
 end
 
 const CNOT = [
@@ -92,7 +92,7 @@ const SWAP = sqrt_SWAP^2
     gate = [basis[i] ⋅ U_basis[j] for i = 1:4, j = 1:4]
     @test norm(gate - U) < 1e-14
 
-    U = exp(1im * random_matrix(4; hermitian=true))
+    U = exp(1im * random_matrix(4; hermitian = true))
     U_basis = transpose(U) * basis
     gate = [basis[i] ⋅ U_basis[j] for i = 1:4, j = 1:4]
     @test norm(gate - U) < 1e-14
@@ -189,36 +189,36 @@ end
 
     @test D_PE(CNOT) ≈ 0.0
     @test D_PE(SWAP) ≈ -2.0
-    @test D_PE(SWAP; absolute_square=true) ≈ 4.0
+    @test D_PE(SWAP; absolute_square = true) ≈ 4.0
     @test D_PE(I(4)) ≈ 2.0
-    @test D_PE(I(4); absolute_square=true) ≈ 4.0
+    @test D_PE(I(4); absolute_square = true) ≈ 4.0
 
 end
 
 
 @testset "Weyl Chamber Region" begin
 
-    @test in_weyl_chamber(CNOT; region="W")
-    @test in_weyl_chamber(CNOT; region="PE")
+    @test in_weyl_chamber(CNOT; region = "W")
+    @test in_weyl_chamber(CNOT; region = "PE")
     @test weyl_chamber_region(CNOT) == "PE"
-    @test !in_weyl_chamber(CNOT; region="W0")
-    @test !in_weyl_chamber(CNOT; region="W0*")
-    @test !in_weyl_chamber(CNOT; region="W1")
+    @test !in_weyl_chamber(CNOT; region = "W0")
+    @test !in_weyl_chamber(CNOT; region = "W0*")
+    @test !in_weyl_chamber(CNOT; region = "W1")
 
-    @test in_weyl_chamber(I(4); region="W0")
+    @test in_weyl_chamber(I(4); region = "W0")
 
-    @test in_weyl_chamber(SWAP; region="W1")
+    @test in_weyl_chamber(SWAP; region = "W1")
     @test weyl_chamber_region(SWAP) == "W1"
 
-    @test in_weyl_chamber(CPHASE8; region="W0")
+    @test in_weyl_chamber(CPHASE8; region = "W0")
 
     @test in_weyl_chamber(0.2, 0.1, 0.1)
-    @test in_weyl_chamber(0.2, 0.1, 0.1; region="W0")
-    @test !in_weyl_chamber(0.2, 0.1, 0.1; region="W1")
+    @test in_weyl_chamber(0.2, 0.1, 0.1; region = "W0")
+    @test !in_weyl_chamber(0.2, 0.1, 0.1; region = "W1")
 
-    @test in_weyl_chamber(0.8, 0.1, 0.1; region="W0*")
+    @test in_weyl_chamber(0.8, 0.1, 0.1; region = "W0*")
 
-    @test in_weyl_chamber(0.5, 0.4, 0.4; region="W1")
+    @test in_weyl_chamber(0.5, 0.4, 0.4; region = "W1")
 
     @test !in_weyl_chamber(1.1, 0.0, 0.0)
     @test !in_weyl_chamber(0.0, 0.6, 0.0)
@@ -243,20 +243,23 @@ end
     Ψ4 = random_state_vector(4)
 
     trajectories = [
-        Trajectory(ket(lbl; N=2), random_matrix(4; hermitian=true, complex=false)) for
-        lbl in ("00", "01", "10", "11")
+        Trajectory(ket(lbl; N = 2), random_matrix(4; hermitian = true, complex = false)) for lbl in ("00", "01", "10", "11")
     ]
 
-    J_T = gate_functional(D_PE; unitarity_weight=0.0)
+    J_T = gate_functional(D_PE; unitarity_weight = 0.0)
     chi_pe = make_chi(J_T, trajectories)
     Ψ = [Ψ1, Ψ2, Ψ3, Ψ4]
     χ_zygote = chi_pe(Ψ, trajectories)
 
-    gate_chi_pe = make_gate_chi(D_PE, trajectories; unitarity_weight=0.0)
+    gate_chi_pe = make_gate_chi(D_PE, trajectories; unitarity_weight = 0.0)
     χ_gate_zygote = gate_chi_pe(Ψ, trajectories)
 
-    gate_chi_pe_fd =
-        make_gate_chi(D_PE, trajectories; automatic=FiniteDifferences, unitarity_weight=0.0)
+    gate_chi_pe_fd = make_gate_chi(
+        D_PE,
+        trajectories;
+        automatic = FiniteDifferences,
+        unitarity_weight = 0.0
+    )
     χ_gate_fd = gate_chi_pe_fd(Ψ, trajectories)
 
     vec_angle(v⃗, w⃗) = acos((v⃗ ⋅ w⃗) / (norm(v⃗) * norm(w⃗)))
@@ -292,8 +295,8 @@ end
     local J_T
     local Ψ
 
-    basis = [ket(lbl; N=2) for lbl in ("00", "01", "10", "11")]
-    H = random_matrix(4; hermitian=true, complex=false)
+    basis = [ket(lbl; N = 2) for lbl in ("00", "01", "10", "11")]
+    H = random_matrix(4; hermitian = true, complex = false)
 
     trajectories = [Trajectory(Ψ, H) for Ψ in basis]
 
@@ -311,7 +314,7 @@ end
     gate_chi_pe = make_gate_chi(J_T_U, trajectories)
     χ_gate_zygote = gate_chi_pe(Ψ, trajectories)
 
-    gate_chi_pe_fd = make_gate_chi(J_T_U, trajectories; automatic=FiniteDifferences)
+    gate_chi_pe_fd = make_gate_chi(J_T_U, trajectories; automatic = FiniteDifferences)
     χ_gate_fd = gate_chi_pe_fd(Ψ, trajectories)
 
     # Does Zygote gate gradient and FD gate gradient match?

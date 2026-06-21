@@ -90,7 +90,7 @@ function weyl_chamber_coordinates(U)
     # arguments which are between -π and -π/2 need to be shifted by 2π
     two_S = [(ϕⱼ + 0.5 < -1e-10 ? ϕⱼ + 2 : ϕⱼ) for ϕⱼ ∈ two_S]
 
-    p = sortperm(two_S, rev=true)  # Zygote can't handle a direct `sort`
+    p = sortperm(two_S, rev = true)  # Zygote can't handle a direct `sort`
     S = [two_S[p[1]] / 2, two_S[p[2]] / 2, two_S[p[3]] / 2, two_S[p[4]] / 2]
     n = Int(round(sum(S)))  # number of ϕⱼ ≤ -π/4
     @assert n ≥ 0
@@ -230,7 +230,7 @@ Weyl chamber coordinates `c₁`, `c₂`, `c₃` (see
 [`weyl_chamber_coordinates`](@ref)) is a perfect entangler. The `region` can be
 any other of the regions returned by [`weyl_chamber_region`](@ref).
 """
-function in_weyl_chamber(c₁, c₂, c₃; region="W")
+function in_weyl_chamber(c₁, c₂, c₃; region = "W")
     regions = ["W", "PE", "W0", "W0*", "W1"]
     if region ∉ regions
         throw(ArgumentError("Invalid region $(repr(region)), must be one of $regions"))
@@ -308,7 +308,7 @@ goes deeper into the perfect entanglers while *increasing* population loss.
     that uses one trajectory for each logical basis state by using
     `QuantumControl.Functionals.gate_functional`.
 """
-function D_PE(U; unitarity_weight=0.0, absolute_square=false)
+function D_PE(U; unitarity_weight = 0.0, absolute_square = false)
     w::Float64 = clamp(1.0 - unitarity_weight, 0.0001, 1.0)
     N = 4
     @assert size(U) == (N, N)
